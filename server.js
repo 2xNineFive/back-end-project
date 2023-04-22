@@ -25,7 +25,13 @@ server.use(express.static(__dirname + "/public"));
 
 // render html
 server.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", {
+    partials: {
+      footer: "partials/footer",
+      header: "partials/header",
+      main: "partials/main/landing",
+    },
+  });
 });
 
 // heartbeat endpoint
