@@ -1,19 +1,21 @@
 // server code here
+require("dotenv").config();
 
 // importing express
-const express = require('express')
+const express = require("express");
 
 // caching express to get access to express methods
 const server = express();
 
+// destructuring
+const PORT = process.env.PORT || 8080;
 
 // heartbeat endpoint
-server.get('/heartbeat', (req, res) => {
-    res.json({
-        "is": "working"
-    })
-})
-
+server.get("/heartbeat", (req, res) => {
+  res.json({
+    is: "working",
+  });
+});
 
 // listening at port 8080
-server.listen(8080, () => console.log("The server is running at port 8080"));
+server.listen(PORT, () => console.log(`The server is running at port ${PORT}`));
