@@ -3,6 +3,9 @@
 // importing .env
 require("dotenv").config();
 
+// rendering
+const es6Renderer = require("express-es6-template-engine");
+
 // importing express
 const express = require("express");
 
@@ -11,6 +14,17 @@ const server = express();
 
 // destructuring
 const PORT = process.env.PORT || 8080;
+
+
+server.engine('html', es6Renderer);
+server.set('views', 'views');
+server.set('view engine', 'html');
+
+// render html
+server.get("/", (req, res) => {
+    res.render('index');
+});
+
 
 // heartbeat endpoint
 server.get("/heartbeat", (req, res) => {
