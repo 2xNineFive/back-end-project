@@ -1,4 +1,6 @@
 // server code here
+
+// importing .env
 require("dotenv").config();
 
 // importing express
@@ -18,5 +20,5 @@ server.get("/heartbeat", (req, res) => {
   });
 });
 
-// listening at port 8080
+// listening at PORT from .env
 server.listen(PORT, () => console.log(`The server is running at port ${PORT}`));
