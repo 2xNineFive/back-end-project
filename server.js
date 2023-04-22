@@ -34,6 +34,16 @@ server.get("/", (req, res) => {
   });
 });
 
+server.get("/login", (req, res) => {
+  res.render("index", {
+    partials: {
+      footer: "partials/footer",
+      header: "partials/header",
+      main: "partials/main/login",
+    },
+  });
+});
+
 // heartbeat endpoint
 server.get("/heartbeat", (req, res) => {
   res.json({
