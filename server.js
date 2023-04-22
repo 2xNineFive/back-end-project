@@ -15,22 +15,24 @@ const server = express();
 // destructuring
 const PORT = process.env.PORT || 8080;
 
+// npm express-es6
+server.engine("html", es6Renderer);
+server.set("views", "views");
+server.set("view engine", "html");
 
-server.engine('html', es6Renderer);
-server.set('views', 'views');
-server.set('view engine', 'html');
+// ill look at public whenever I see a "./"
+server.use(express.static(__dirname + "/public"));
 
 // render html
 server.get("/", (req, res) => {
-    res.render('index');
+  res.render("index");
 });
-
 
 // heartbeat endpoint
 server.get("/heartbeat", (req, res) => {
   res.json({
     is: "working",
-    status: "good"
+    status: "good",
   });
 });
 
