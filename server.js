@@ -27,6 +27,19 @@ server.set("view engine", "html");
 // ill look at public whenever I see a "./"
 server.use(express.static(__dirname + "/public"));
 
+server.use(express.json());
+
+const authStatus = {
+  isAuthenticated: false
+}
+
+const validCreds = {
+  password: "1234",
+  username: "anna"
+};
+
+
+
 // render html
 server.get("/", (req, res) => {
   res.render("index", {
@@ -81,6 +94,17 @@ server.get("/login", (req, res) => {
 
     partials: setMainView("login"),
   });
+});
+
+server.post("/login", (req, res) => {
+  const { password, username } = req.body;
+  if (password === validCreds.password && username === validCreds.username) {
+    authStatus.isAuthenticated = true;
+  } else {
+    authStatus.isAuthenticated = false
+  }
+  res.json(authStatus)
+
 });
 
 server.get("/logout", (req, res) => {

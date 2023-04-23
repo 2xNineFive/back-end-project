@@ -11,12 +11,14 @@ function stringifyFormData(fd) {
   return JSON.stringify(data, null, 4);
 }
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
   const data = new FormData(e.target);
   const stringified = stringifyFormData(data);
-  console.log(stringified);
+  // console.log(stringified);
+  const response = await doLogin(stringified);
   renderform()
+  console.log(`The user is logged in: ${response.isAuthenticated}`)
 };
 
 
@@ -35,3 +37,15 @@ function renderform() {
     `;
     credscontainer.innerHTML = html;
 }
+
+async function doLogin (body) {
+  const data = await fetch('/login', {
+    body, 
+    headers: {
+      'Content-Type': "application/json"
+    },
+    method: 'POST'
+  }) 
+  const response = await data.json();
+  return response;
+} 
