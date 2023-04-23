@@ -9,7 +9,7 @@ const es6Renderer = require("express-es6-template-engine");
 // importing express
 const express = require("express");
 
-const { setMainView } = require("./utils");
+const { setMainView, setNavs } = require("./utils");
 
 const navs = require("./data/navs.json");
 
@@ -30,56 +30,63 @@ server.use(express.static(__dirname + "/public"));
 // render html
 server.get("/", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("landing"),
   });
 });
 
 server.get("/home", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("home"),
   });
 });
 
 server.get("/gallery", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
     partials: setMainView("gallery"),
   });
 });
 
 server.get("/about", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("about"),
   });
 });
 
 server.get("/contact-us", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("contact-us"),
   });
 });
 
 server.get("/profile", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("profile"),
   });
 });
 
 server.get("/login", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("login"),
   });
 });
 
 server.get("/logout", (req, res) => {
   res.render("index", {
-    locals: { navs },
+    locals: setNavs(req.url, navs),
+
     partials: setMainView("logout"),
   });
 });
