@@ -3,10 +3,8 @@
 // importing .env
 require("dotenv").config();
 
-
-const {checkAuth} = require("./middleware") 
-const cookieParser = require('cookie-parser')
-
+const { checkAuth } = require("./middleware");
+const cookieParser = require("cookie-parser");
 
 // rendering
 const es6Renderer = require("express-es6-template-engine");
@@ -14,9 +12,7 @@ const es6Renderer = require("express-es6-template-engine");
 // importing express
 const express = require("express");
 
-
-
-const sessions = require('express-session')
+const sessions = require("express-session");
 
 const { setMainView, setNavs } = require("./utils");
 
@@ -40,15 +36,14 @@ server.use(express.json());
 
 server.use(cookieParser());
 
-server.use(sessions({
-  secret: process.env.SECRET,
-  saveUnitialized:true,
-  cookie: {maxAge: 30000},
-  resave: false
-}))
-
-
-
+server.use(
+  sessions({
+    secret: process.env.SECRET,
+    saveUnitialized: true,
+    cookie: { maxAge: 30000 },
+    resave: false,
+  })
+);
 
 // const authStatus = {
 //   isAuthenticated: false
@@ -56,15 +51,13 @@ server.use(sessions({
 
 const validCreds = {
   password: "1234",
-  username: "anna"
+  username: "anna",
 };
-
-
 
 // render html
 server.get("/", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("landing"),
   });
@@ -72,7 +65,7 @@ server.get("/", (req, res) => {
 
 server.get("/home", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("home"),
   });
@@ -80,14 +73,14 @@ server.get("/home", (req, res) => {
 
 server.get("/gallery", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
     partials: setMainView("gallery"),
   });
 });
 
 server.get("/about", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("about"),
   });
@@ -95,7 +88,7 @@ server.get("/about", (req, res) => {
 
 server.get("/contact-us", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("contact-us"),
   });
@@ -103,7 +96,7 @@ server.get("/contact-us", (req, res) => {
 
 server.get("/profile", checkAuth, (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("profile"),
   });
@@ -111,7 +104,7 @@ server.get("/profile", checkAuth, (req, res) => {
 
 server.get("/login", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("login"),
   });
@@ -120,22 +113,21 @@ server.get("/login", (req, res) => {
 server.post("/login", (req, res) => {
   const afterLogin = {
     isAuthenticated: false,
-    redirectedTo: './login'
-  }
+    redirectedTo: "./login",
+  };
   const { password, username } = req.body;
   if (password === validCreds.password && username === validCreds.username) {
-    req.session.userId = username
-    afterLogin.isAuthenticated= true;
-    afterLogin.redirectedTo = "/profile"
+    req.session.userId = username;
+    afterLogin.isAuthenticated = true;
+    afterLogin.redirectTo = "/profile";
   }
 
-  res.json(afterLogin)
-
+  res.json(afterLogin);
 });
 
 server.get("/logout", (req, res) => {
   res.render("index", {
-    locals: setNavs(req.url, navs),
+    locals: setNavs(req.url, navs, !!req.session.userId),
 
     partials: setMainView("logout"),
   });
