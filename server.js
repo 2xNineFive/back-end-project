@@ -126,11 +126,8 @@ server.post("/login", (req, res) => {
 });
 
 server.get("/logout", (req, res) => {
-  res.render("index", {
-    locals: setNavs(req.url, navs, !!req.session.userId),
-
-    partials: setMainView("logout"),
-  });
+  req.session.destroy();
+  res.redirect('/')
 });
 
 // heartbeat endpoint
