@@ -35,10 +35,52 @@ server.get("/", (req, res) => {
   });
 });
 
+server.get("/home", (req, res) => {
+  res.render("index", {
+    locals: { navs },
+    partials: setMainView("home"),
+  });
+});
+
+server.get("/gallery", (req, res) => {
+  res.render("index", {
+    locals: { navs },
+    partials: setMainView("gallery"),
+  });
+});
+
+server.get("/about", (req, res) => {
+  res.render("index", {
+    locals: { navs },
+    partials: setMainView("about"),
+  });
+});
+
+server.get("/contact-us", (req, res) => {
+  res.render("index", {
+    locals: { navs },
+    partials: setMainView("contact-us"),
+  });
+});
+
+server.get("/profile", (req, res) => {
+  res.render("index", {
+    locals: { navs },
+    partials: setMainView("profile"),
+  });
+});
+
 server.get("/login", (req, res) => {
   res.render("index", {
     locals: { navs },
     partials: setMainView("login"),
+  });
+});
+
+server.get("/logout", (req, res) => {
+  res.render("index", {
+    locals: { navs },
+    partials: setMainView("logout"),
   });
 });
 
