@@ -1,4 +1,4 @@
-alert("Hello World!");
+// alert("Hello World!");
 
 const form = document.getElementById("form");
 

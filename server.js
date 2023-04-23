@@ -9,6 +9,8 @@ const es6Renderer = require("express-es6-template-engine");
 // importing express
 const express = require("express");
 
+const { setMainView } = require("./utils")
+
 // caching express to get access to express methods
 const server = express();
 
@@ -26,21 +28,13 @@ server.use(express.static(__dirname + "/public"));
 // render html
 server.get("/", (req, res) => {
   res.render("index", {
-    partials: {
-      footer: "partials/footer",
-      header: "partials/header",
-      main: "partials/main/landing",
-    },
+    partials: setMainView('landing')
   });
 });
 
 server.get("/login", (req, res) => {
   res.render("index", {
-    partials: {
-      footer: "partials/footer",
-      header: "partials/header",
-      main: "partials/main/login",
-    },
+    partials: setMainView('login')
   });
 });
 
