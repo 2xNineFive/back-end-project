@@ -3,11 +3,20 @@
 // importing .env
 require("dotenv").config();
 
+
+const {checkAuth} = require("./middleware") 
+const cookieParser = require('cookie-parser')
+
+
 // rendering
 const es6Renderer = require("express-es6-template-engine");
 
 // importing express
 const express = require("express");
+
+
+
+const sessions = require('express-session')
 
 const { setMainView, setNavs } = require("./utils");
 
@@ -29,9 +38,21 @@ server.use(express.static(__dirname + "/public"));
 
 server.use(express.json());
 
-const authStatus = {
-  isAuthenticated: false
-}
+server.use(cookieParser());
+
+server.use(sessions({
+  secret: process.env.SECRET,
+  saveUnitialized:true,
+  cookie: {maxAge: 30000},
+  resave: false
+}))
+
+
+
+
+// const authStatus = {
+//   isAuthenticated: false
+// }
 
 const validCreds = {
   password: "1234",
@@ -80,7 +101,7 @@ server.get("/contact-us", (req, res) => {
   });
 });
 
-server.get("/profile", (req, res) => {
+server.get("/profile", checkAuth, (req, res) => {
   res.render("index", {
     locals: setNavs(req.url, navs),
 
@@ -97,13 +118,18 @@ server.get("/login", (req, res) => {
 });
 
 server.post("/login", (req, res) => {
+  const afterLogin = {
+    isAuthenticated: false,
+    redirectedTo: './login'
+  }
   const { password, username } = req.body;
   if (password === validCreds.password && username === validCreds.username) {
-    authStatus.isAuthenticated = true;
-  } else {
-    authStatus.isAuthenticated = false
+    req.session.userId = username
+    afterLogin.isAuthenticated= true;
+    afterLogin.redirectedTo = "/profile"
   }
-  res.json(authStatus)
+
+  res.json(afterLogin)
 
 });
 
